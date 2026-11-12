@@ -1,0 +1,90 @@
+@startuml 02-class
+!pragma layout smetana
+title Class Diagram - Dakhl va Kharj
+skinparam classAttributeIconSize 0
+
+class User {
+  +id : int
+  +name : string
+  +username : string
+  -passwordHash : string
+}
+
+class Card {
+  +id : int
+  +title : string
+  +number : string
+  +photoPath : string
+  +balance : Decimal
+  +isBank : bool
+}
+
+class Item {
+  +id : int
+  +title : string
+  +type : ItemType
+  +isActive : bool
+}
+
+class Transaction {
+  +id : int
+  +amount : Decimal
+  +direction : Direction
+  +date : datetime
+  +description : string
+  +sourceType : string
+}
+
+class Loan {
+  +id : int
+  +amount : Decimal
+  +startDate : date
+  +installmentCount : int
+  +status : string
+}
+
+class Installment {
+  +id : int
+  +dueDate : date
+  +amount : Decimal
+  +paidAt : datetime
+  +status : InstallmentStatus
+  +isOverdue() : bool
+}
+
+class Investment {
+  +id : int
+  +amount : Decimal
+  +startDate : date
+  +currentValue : Decimal
+  +status : string
+  +profit() : Decimal
+}
+
+enum ItemType {
+  FIXED
+  VARIABLE
+}
+enum Direction {
+  IN
+  OUT
+}
+enum InstallmentStatus {
+  PENDING
+  PAID
+  OVERDUE
+}
+
+User "1" -- "*" Card : owns
+User "1" -- "*" Item : owns
+User "1" -- "*" Investment : owns
+Card "1" -- "*" Item : holds
+Card "1" -- "*" Transaction : records
+Item "0..1" -- "*" Transaction : classifies
+Loan "1" *-- "*" Installment : consists of
+Loan "*" -- "1" Card : lender
+Loan "*" -- "1" Card : borrower
+Installment "0..1" -- "0..1" Transaction : payment
+Loan "0..1" -- "*" Transaction : disbursement
+Investment "0..1" -- "*" Transaction : funding
+@enduml

@@ -1,0 +1,33 @@
+@startuml 01-usecase
+left to right direction
+title Use Case Diagram - Dakhl va Kharj
+actor "User" as U
+note "Login is a precondition for all use cases" as N
+rectangle "Finance System" {
+  usecase "Manage Cards" as UC1
+  usecase "Manage Items" as UC2
+  usecase "Transfer Items Between Cards" as UC3
+  usecase "Card Deposit/Withdraw" as UC4
+  usecase "Deposit To Personal Bank" as UC5
+  usecase "Grant Loan and Installments" as UC6
+  usecase "Register Investment" as UC7
+  usecase "View Overdue Installments" as UC8
+  usecase "Export Excel" as UC9
+  usecase "Record Transaction" as UC10
+}
+U --> UC1
+U --> UC2
+U --> UC3
+U --> UC4
+U --> UC5
+U --> UC6
+U --> UC7
+U --> UC8
+U --> UC9
+UC4 ..> UC10 : <<include>>
+UC5 ..> UC10 : <<include>>
+UC6 ..> UC10 : <<include>>
+UC7 ..> UC10 : <<include>>
+UC8 ..> UC6 : <<extend>>
+N .. UC1
+@enduml

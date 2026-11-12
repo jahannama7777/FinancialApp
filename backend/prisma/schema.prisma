@@ -1,0 +1,149 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- Enums (از نمودار کلاس) ----------
+
+enum ItemType {
+  FIXED
+  VARIABLE
+}
+
+enum Direction {
+  IN
+  OUT
+}
+
+enum InstallmentStatus {
+  PENDING
+  PAID
+  OVERDUE
+}
+
+// ---------- Models ----------
+
+model User {
+  id           Int      @id @default(autoincrement())
+  name         String
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  cards       Card[]
+  items       Item[]
+  investments Investment[]
+}
+
+model Card {
+  id        Int     @id @default(autoincrement())
+  title     String
+  number    String
+  photoPath String?
+  balance   Decimal @default(0) @db.Decimal(18, 2)
+  isBank    Boolean @default(false)
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  items        Item[]
+  transactions Transaction[]
+
+  loansAsLender   Loan[] @relation("LoanLender")
+  loansAsBorrower Loan[] @relation("LoanBorrower")
+
+  @@index([userId])
+}
+
+model Item {
+  id       Int      @id @default(autoincrement())
+  title    String
+  type     ItemType
+  isActive Boolean  @default(true)
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  cardId Int
+  card   Card @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  transactions Transaction[]
+
+  @@index([userId, cardId])
+}
+
+model Transaction {
+  id          Int       @id @default(autoincrement())
+  amount      Decimal   @db.Decimal(18, 2)
+  direction   Direction
+  date        DateTime  @default(now())
+  description String?
+  sourceType  String
+
+  cardId Int
+  card   Card @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  itemId Int?
+  item   Item? @relation(fields: [itemId], references: [id])
+
+  loanId Int?
+  loan   Loan? @relation(fields: [loanId], references: [id])
+
+  investmentId Int?
+  investment   Investment? @relation(fields: [investmentId], references: [id])
+
+  installment Installment?
+
+  @@index([cardId, date])
+}
+
+model Loan {
+  id               Int      @id @default(autoincrement())
+  amount           Decimal  @db.Decimal(18, 2)
+  startDate        DateTime @db.Date
+  installmentCount Int
+  status           String   @default("ACTIVE")
+
+  lenderCardId Int
+  lenderCard   Card @relation("LoanLender", fields: [lenderCardId], references: [id])
+
+  borrowerCardId Int
+  borrowerCard   Card @relation("LoanBorrower", fields: [borrowerCardId], references: [id])
+
+  installments Installment[]
+  transactions Transaction[]
+}
+
+model Installment {
+  id      Int               @id @default(autoincrement())
+  dueDate DateTime          @db.Date
+  amount  Decimal           @db.Decimal(18, 2)
+  paidAt  DateTime?
+  status  InstallmentStatus @default(PENDING)
+
+  loanId Int
+  loan   Loan @relation(fields: [loanId], references: [id], onDelete: Cascade)
+
+  // یکبهیک: هر قسط حداکثر یک تراکنش پرداخت دارد
+  transactionId Int?         @unique
+  transaction   Transaction? @relation(fields: [transactionId], references: [id])
+
+  @@index([loanId, dueDate])
+}
+
+model Investment {
+  id           Int      @id @default(autoincrement())
+  amount       Decimal  @db.Decimal(18, 2)
+  startDate    DateTime @db.Date
+  currentValue Decimal  @db.Decimal(18, 2)
+  status       String   @default("ACTIVE")
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  transactions Transaction[]
+}

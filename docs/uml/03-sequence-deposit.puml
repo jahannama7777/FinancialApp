@@ -1,0 +1,23 @@
+@startuml 03-sequence-deposit
+title Sequence - Deposit to Personal Bank
+actor "User" as U
+participant "Frontend (Next.js)" as FE
+participant "Backend (NestJS)" as BE
+database "Database (Prisma)" as DB
+
+U -> FE : Enter amount, source and description
+FE -> BE : POST /bank/deposits (with auth token)
+BE -> BE : Verify token, validate positive amount
+BE -> DB : BEGIN
+BE -> DB : Create Transaction (direction = in)
+BE -> DB : Increase personal bank balance
+alt success
+  BE -> DB : COMMIT
+  BE --> FE : 200 + new balance
+  FE --> U : Success message
+else error
+  BE -> DB : ROLLBACK
+  BE --> FE : 4xx/5xx
+  FE --> U : Error message
+end
+@enduml

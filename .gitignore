@@ -1,0 +1,31 @@
+# dependencies
+node_modules/
+
+# build
+dist/
+build/
+.next/
+out/
+
+# env — هرگز کامیت نشود
+.env
+.env.local
+.env.*.local
+
+# prisma
+prisma/*.db
+prisma/*.db-journal
+
+# logs
+*.log
+npm-debug.log*
+
+# editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# misc
+coverage/
+*.tsbuildinfo
