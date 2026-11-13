@@ -1,0 +1,45 @@
+[33mcommit 2473f3cbf34e008ad4b52c4e5f19ed7a76dc2e80[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: jahannama7777 <134047060+jahannama7777@users.noreply.github.com>
+Date:   Thu Nov 12 18:03:27 2026 +0330
+
+    chore: scaffold NestJS backend + Prisma schema + UML docs
+
+ .gitignore                                                     |   31 [32m+[m
+ backend/.env.example                                           |    2 [32m+[m
+ backend/.gitattributes                                         |    1 [32m+[m
+ backend/.gitignore                                             |   59 [32m+[m
+ backend/.oxlintrc.json                                         |   10 [32m+[m
+ backend/.prettierrc                                            |    4 [32m+[m
+ backend/AGENTS.md                                              |   33 [32m+[m
+ backend/README.md                                              |  132 [32m+[m
+ backend/jest.config.ts                                         |   30 [32m+[m
+ backend/nest-cli.json                                          |    8 [32m+[m
+ backend/package-lock.json                                      | 9761 [32m+++++++++++++++++++++++++++++++++++++++++++++++++++++[m
+ backend/package.json                                           |   55 [32m+[m
+ backend/prisma/migrations/20261112141514_initial/migration.sql |  152 [32m+[m
+ backend/prisma/migrations/migration_lock.toml                  |    3 [32m+[m
+ backend/prisma/schema.prisma                                   |  149 [32m+[m
+ backend/src/app.controller.spec.ts                             |   22 [32m+[m
+ backend/src/app.controller.ts                                  |   12 [32m+[m
+ backend/src/app.module.ts                                      |   13 [32m+[m
+ backend/src/app.service.ts                                     |    8 [32m+[m
+ backend/src/bank/bank.controller.ts                            |   13 [32m+[m
+ backend/src/bank/bank.service.ts                               |   49 [32m+[m
+ backend/src/bank/dto/deposit.dto.ts                            |   14 [32m+[m
+ backend/src/main.ts                                            |   11 [32m+[m
+ backend/src/prisma/prisma.module.ts                            |    9 [32m+[m
+ backend/src/prisma/prisma.service.ts                           |    9 [32m+[m
+ backend/test/app.e2e-spec.ts                                   |   29 [32m+[m
+ backend/test/jest-e2e.json                                     |    9 [32m+[m
+ backend/tsconfig.build.json                                    |    8 [32m+[m
+ backend/tsconfig.json                                          |   23 [32m+[m
+ docs/uml/01-class.jpg                                          |  Bin [31m0[m -> [32m79369[m bytes
+ docs/uml/01-usecase.puml                                       |   33 [32m+[m
+ docs/uml/02-class.jpg                                          |  Bin [31m0[m -> [32m138865[m bytes
+ docs/uml/02-class.puml                                         |   90 [32m+[m
+ docs/uml/03-sequence-deposit.jpg                               |  Bin [31m0[m -> [32m81528[m bytes
+ docs/uml/03-sequence-deposit.puml                              |   23 [32m+[m
+ docs/uml/FinanceApp-UML-Archive.docx                           |  Bin [31m0[m -> [32m35865[m bytes
+ docs/uml/FinanceApp.eapx                                       |  Bin [31m0[m -> [32m2510848[m bytes
+ docs/uml/PlantUML-CheatSheet-fa.md                             |  329 [32m++[m
+ 38 files changed, 11134 insertions(+)
