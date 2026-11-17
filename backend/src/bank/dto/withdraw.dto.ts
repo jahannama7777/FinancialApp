@@ -1,11 +1,13 @@
-import { IsInt, IsNumber, IsOptional, IsString, Min } from 'class-validator';
+import { IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
 
 export class WithdrawDto {
   @IsInt()
   cardId: number;
 
-  @IsNumber({ maxDecimalPlaces: 2 })
-  @Min(0.01)
+  // مبلغ به تومان: عدد صحیح و مثبت
+  @IsInt()
+  @Min(1)
+  @Max(2147483647)
   amount: number;
 
   @IsOptional()
